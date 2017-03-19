@@ -1,2 +1,2 @@
-# meteor-react-todo
-A meteor with react todo app
+# Meteor + React Todo Example
+A meteor + react todo app example
