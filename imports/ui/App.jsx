@@ -34,9 +34,15 @@ class App extends Component {
     })
   }
 
+  // Filters checked off tasks
   renderTasks() {
-    return this.props.tasks.map((task) => (
-      <Task key={task._id} task={task}/>
+    let filteredTasks = this.props.tasks
+    if (this.state.hideCompleted) {
+      filteredTasks = filteredTasks.filter((task) => !task.checked)
+    }
+
+    return filteredTasks.map((task) => (
+      <Task key={task._id} task={task} />
     ))
   }
 
