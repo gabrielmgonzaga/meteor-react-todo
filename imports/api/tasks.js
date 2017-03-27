@@ -35,5 +35,18 @@ Meteor.methods({
     check(setChecked, Boolean)
 
     Tasks.update(taskId, { $set: { checked: setChecked } })
+  },
+  'tasks.setPrivate'(taskId, setToPrivate) {
+    check(taskId, String)
+    check(setToPrivate, Boolean)
+
+    const task = Tasks.findOne(taskId)
+
+    // Only the task owner can make a task private
+    if (task.owner !== Meteor.userId()) {
+      throw new Meteor.Error('not-authorized')
+    }
+
+    Tasks.update(taskId, { $set: { private: setToPrivate } })
   }
 })
