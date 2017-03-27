@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { Random } from 'meteor/random'
+import { assert } from 'meteor/practicalmeteor:chai'
 import { Tasks } from './tasks.js'
 
 if (Meteor.isServer) {
@@ -14,12 +15,17 @@ if (Meteor.isServer) {
           text: 'test task',
           createdAt: new Date(),
           owner: userId,
-          username: 'gg',
+          username: 'tmeasday',
         })
       })
 
-    it('can delete owned task', () => {
+      it('can delete owned task', () => {
+        const deleteTask = Meteor.server.method_handlers['tasks.remove']
+        const invocation = { userId }
 
+        deleteTask.apply(invocation, [taskId])
+        assert.equal(Tasks.find().count(), 0)
+      })
     })
   })
 }
