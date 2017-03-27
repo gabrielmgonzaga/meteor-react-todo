@@ -33,6 +33,9 @@ Meteor.methods({
   },
   'tasks.remove'(taskId) {
     check(taskId, String)
+    if (task.private && task.owner !== Meteor.userId()) {
+      throw new Meteor.Error('not-authorized')
+    }
     Tasks.remove(taskId)
   },
   'tasks.setChecked'(taskId, setChecked) {
@@ -46,6 +49,9 @@ Meteor.methods({
     check(setToPrivate, Boolean)
 
     const task = Tasks.findOne(taskId)
+    if (task.private && task.owner !== Meteor.userId()) {
+      throw new Meteor.Error('not-authorized')
+    }
 
     // Only the task owner can make a task private
     if (task.owner !== Meteor.userId()) {
